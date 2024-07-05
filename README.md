@@ -32,11 +32,12 @@ Generate ISO by `nix build .#nixosConfigurations.example-installer.config.system
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+    unattended-installer.url = "github:chrillefkr/nixos-unattended-installer";
   };
 
-  outputs = { self, nixpkgs, disko }: {
+  outputs = { self, nixpkgs, disko, unattended-installer }: {
     nixosConfigurations = {
-      example-installer = self.lib.diskoInstallerWrapper self.nixosConfigurations.example-machine { };
+      example-installer = unattended-installer.lib.diskoInstallerWrapper self.nixosConfigurations.example-machine { };
 
       example-machine = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
